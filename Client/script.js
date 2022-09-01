@@ -46,6 +46,7 @@ function openModal(data, modify) {
   }
   else{
     let date = data.date.split('-');
+    console.log(data.day);
     dayInputArea.innerText = data.day;
     dateInit.innerText =  `${date[1]}-${date[2].split(' ')[0]}`;
     title.value = data.title;
@@ -147,12 +148,14 @@ function load() {
       result.data.map(c=>{
         let data = {
           title:c.title,
-          day:c.day,
+          day:c.day_id,
           date:c.date,
+          date_no:c.date_no,
           cat:c.category,
           sts:c.state,
           refer:c.refer
         }
+        console.log(data);
         
         dataArray.push(data);
       })
@@ -303,16 +306,7 @@ function saveEvent() {
     console.log("cat  " + cat.length);
     console.log("refer  " + refer.length);
 
-    const data = { 
-      day:day, 
-      title:eventTitleInput.value,
-      date:`${clicked} ${h}:${m}`,
-      sts:sts,
-      cat:cat,
-      refer:refer
-    };
     
-    dataArray.push(data);
     
     axios.post('http:localhost:3000/reg',
     {
@@ -324,6 +318,18 @@ function saveEvent() {
       refer:refer
     })
     .then(result=>{
+      result.data.map(c =>{
+        const data = { 
+          day:day, 
+          title:eventTitleInput.value,
+          date:`${clicked} ${h}:${m}`,
+          date_no:c.date_no,
+          sts:sts,
+          cat:cat,
+          refer:refer
+        };
+        dataArray.push(data);
+      })
       closeModal();
       document.getElementById('timeInitHour').value = "";
       document.getElementById('timeInitMinut').value ="";
@@ -348,6 +354,7 @@ function deleteEvent() {
       day:data.day, 
       title:data.title,
       date:data.date,
+      date_no:data.date_no,
       sts:data.sts,
       cat:data.cat,
       refer:data.refer
@@ -371,7 +378,7 @@ function ModifyEvent() {
     let cat = document.getElementById('categoryInput').value;
     let refer = document.getElementById('refer').value;
     let newDate = data.date.split(' ');
-    console.log(h);
+    
     const dataObj = { 
       day:day, 
       title:eventTitleInput.value,

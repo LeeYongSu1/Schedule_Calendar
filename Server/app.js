@@ -36,12 +36,12 @@ console.log("state  " + sts);
 console.log("refer  " + refer);  
 console.log("%"+date.substr(0,10)+"%");
 
-const query = 'INSERT INTO public."schedule" (date, date_no, day_id, title, category, state, refer) VALUES ($1,case when (select count(date) from public."schedule" where date LIKE $2) = 0 then (select coalesce(max(date_no), 1) from public."schedule" where date LIKE $2) when (select count(date) from public."schedule" where date LIKE $2) > 0 then (select max(date_no) from public."schedule" where date LIKE $2) + 1 else 1 end, $3,$4 ,$5 , $6, $7)';
+const query = 'INSERT INTO public."schedule" (date, date_no, day_id, title, category, state, refer) VALUES ($1,case when (select count(date) from public."schedule" where date LIKE $2) = 0 then (select coalesce(max(date_no), 1) from public."schedule" where date LIKE $2) when (select count(date) from public."schedule" where date LIKE $2) > 0 then (select max(date_no) from public."schedule" where date LIKE $2) + 1 else 1 end, $3,$4 ,$5 , $6, $7) RETURNING date_no';
 client.query(query,[date, "%"+date.substr(0,10)+"%",day, title, cat, sts, refer],(err, result)=>{
         if(err){
             console.log('Error', err)
         }else{      
-            res.send('OK')
+            res.send(result.rows)
         }
     })
 })
@@ -54,7 +54,7 @@ app.post('/load', (req, res)=>{
     // client.query('SELECT * FROM public."schedule" where to_char(date, $1) = $2',['YYYY-MM-DD', date],(err, result)=>{
     //     res.send(result.rows);
     // })
-    client.query(`SELECT title, day_id, date, state, category, refer FROM public."schedule"`,(err, result)=>{
+    client.query(`SELECT title, date_no, day_id, date, state, category, refer FROM public."schedule" ORDER BY date, date_no`,(err, result)=>{
         if(err){
             console.log(err);
         }else{
@@ -71,13 +71,14 @@ app.post('/del', (req, res)=>{
     const title = req.body.title;
     const day = req.body.day;
     const date = req.body.date;
+    const date_no = req.body.date_no;
     const cat = req.body.cat;
     const sts = req.body.sts;
     const refer = req.body.refer;
    
     const client = new Client(dbInfo)
     client.connect()
-    client.query('DELETE FROM public."schedule" WHERE title= $1 AND day = $2 AND date = $3 AND category = $4',[title,day,date,cat], (err, result)=>{
+    client.query('DELETE FROM public."schedule" WHERE title= $1 AND day_id = $2 AND date = $3 AND date_no = $4',[title,day,date,date_no], (err, result)=>{
         if(err){
             console.log('Error',err)
         }else{
@@ -104,7 +105,7 @@ app.post('/mod', (req, res)=>{
     console.log("refer  " + refer);
     const client = new Client(dbInfo)
     client.connect()
-    client.query('UPDATE public."schedule" SET title = $1, day = $2, date = $3,category = $4,state = $5,refer = $6 WHERE title = $7'
+    client.query('UPDATE public."schedule" SET title = $1, day_id = $2, date = $3,category = $4,state = $5,refer = $6 WHERE title = $7'
                 , [title, day, date,cat,sts,refer,beforeTitle]
                 , (err, result)=>{
         if(err){

@@ -1,6 +1,6 @@
 const dbInfo = {
     user:'postgres'
-    ,password:'1234'
+    ,password:'0000'
     ,port:5432
     ,host:'localhost'
     ,database:'postgres'
