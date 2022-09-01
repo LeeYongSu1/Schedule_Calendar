@@ -49,7 +49,7 @@ function openModal(data, modify) {
     dayInputArea.innerText = data.day;
     dateInit.innerText =  `${date[1]}-${date[2].split(' ')[0]}`;
     title.value = data.title;
-    console.log(data);
+    
     stateInit[parseInt(data.sts)].selected = true;
     categoryInit.value = data.cat;
     let _hour = data.date.split(' ');
@@ -97,7 +97,12 @@ function openModal(data, modify) {
         timeH[i].selected = true;
       }
       else{
-        timeH[i].selected = false;
+        if(i == 0){
+          timeH[i].selected = true;
+        }
+        else{
+          timeH[i].selected = false;
+        }
       }
     }
     for(let i = 0; i < timeM.length; i++){
@@ -105,7 +110,13 @@ function openModal(data, modify) {
         timeM[i].selected = true;
       }
       else{
-        timeM[i].selected = false;
+        if(i == 0){
+          timeM[i].selected = true;
+        }
+        else{
+          timeM[i].selected = false;
+        }
+        
       }
     }
   }
@@ -200,10 +211,6 @@ function Init(){
       }
     }
     
-      
-      
-      
-      
     if (i > this.paddingDays) {
       daySquare.innerText =  i - this.paddingDays;// 1~31
       const daySquareInnerText = document.createElement('div');
@@ -284,13 +291,18 @@ function saveEvent() {
     
     let day = document.getElementById('dayInputArea').innerText;
     let date = document.getElementById('dateInit').innerText;
-    
     let h = document.getElementById('timeInitHour').value;
     let m = document.getElementById('timeInitMinut').value;
     let sts = document.getElementById('eventStatus').value;
     let cat = document.getElementById('categoryInput').value;
     let refer = document.getElementById('refer').value;
-    
+    console.log("title  " + eventTitleInput.value.length);
+    console.log("day  " + day.length);
+    console.log("date  " + date.length);
+    console.log("sts  " + sts.length);
+    console.log("cat  " + cat.length);
+    console.log("refer  " + refer.length);
+
     const data = { 
       day:day, 
       title:eventTitleInput.value,
@@ -302,7 +314,6 @@ function saveEvent() {
     
     dataArray.push(data);
     
-   
     axios.post('http:localhost:3000/reg',
     {
       day:day, 
@@ -317,18 +328,7 @@ function saveEvent() {
       document.getElementById('timeInitHour').value = "";
       document.getElementById('timeInitMinut').value ="";
     })
-
     
-    // events.push({
-    //   date: clicked,
-    //   title: eventTitleInput.value,
-    // });
-
-    // localStorage.setItem('events', JSON.stringify(events));
-    
-    // closeModal();
-    // document.getElementById('timeInitHour').value = "";
-    // document.getElementById('timeInitMinut').value ="";
   } else {
     eventTitleInput.classList.add('error');
   }
@@ -336,7 +336,14 @@ function saveEvent() {
 
 function deleteEvent() {
   let data = dataArray[dataArrayIndex];
-  console.log(data.date);
+  // console.log(data);
+  // console.log("title  " + data.title.length);
+  // console.log("day  " + data.day.length);
+  // console.log("date  " + data.date.length);
+  // console.log("state  " + data.sts.length);
+  // console.log("category  " + data.cat.length);
+  // console.log("refer  " + data.refer.length);
+
   axios.post('http:localhost:3000/del',{
       day:data.day, 
       title:data.title,
@@ -347,7 +354,46 @@ function deleteEvent() {
   })
   .then(result=>{
       if(result.data==='OK'){
-        dataArray.pop(data);
+        delete dataArray[dataArrayIndex];
+        closeModal();
+      }
+  })
+}
+
+function ModifyEvent() {
+    let data = dataArray[dataArrayIndex];
+    let beforeTitle = data.title;
+    let day = document.getElementById('dayInputArea').innerText;
+    let date = document.getElementById('dateInit').innerText;
+    let h = document.getElementById('timeInitHour').value;
+    let m = document.getElementById('timeInitMinut').value;
+    let sts = document.getElementById('eventStatus').value;
+    let cat = document.getElementById('categoryInput').value;
+    let refer = document.getElementById('refer').value;
+    let newDate = data.date.split(' ');
+    console.log(h);
+    const dataObj = { 
+      day:day, 
+      title:eventTitleInput.value,
+      date:`${newDate[0]} ${h}:${m}`,
+      sts:sts,
+      cat:cat,
+      refer:refer
+    };
+    
+    dataArray[dataArrayIndex] = dataObj;
+
+  axios.post('http:localhost:3000/mod',{
+      beforeTitle:beforeTitle,
+      day:dataObj.day, 
+      title:dataObj.title,
+      date:dataObj.date,
+      sts:dataObj.sts,
+      cat:dataObj.cat,
+      refer:dataObj.refer
+  })
+  .then(result=>{
+      if(result.data==='OK'){
         closeModal();
       }
   })
@@ -368,7 +414,7 @@ function initButtons() {
   document.getElementById('saveButton').addEventListener('click', saveEvent);
   document.getElementById('cancelButton').addEventListener('click', closeModal);
   document.getElementById('deleteButton').addEventListener('click', deleteEvent);
-  document.getElementById('modifyButton').addEventListener('click', closeModal);
+  document.getElementById('modifyButton').addEventListener('click', ModifyEvent);
 
  
 }
