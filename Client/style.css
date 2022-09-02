@@ -61,8 +61,10 @@ button {
   flex-direction: column;
   justify-content: space-between;
   position: relative;
+  overflow:auto; 
 }
 .dayExtend{
+  display: flex;
   /* height: 100%; */
 }
 .day:hover {
@@ -110,7 +112,7 @@ button {
   background-color: #FFFCFF !important;
   box-shadow: none !important;
 }
-#schedule {
+.scheduleTitle {
   width: auto;
   font-size: 45px;
   text-align: center;
@@ -118,17 +120,38 @@ button {
   margin-top:50px;
   padding:20px;
 }
+
 #schedule table{  
+  border: 1px #96d6fe solid;
+  font-size: .9em;
+  box-shadow: 0 2px 5px rgba(0,0,0,.25);
   width: 100%;
-  font-size: 20px;
-  text-align: center;
-  border:1px solid #58bae4;
   border-collapse: collapse;
-  margin: 20px 0  20px 0;
+  border-radius: 5px;
+  overflow: hidden;
 }
-#schedule table tr,th{  
+th {
+  text-align: left;
+}
+  
+thead {
+  font-weight: bold;
+  color: #fff;
+  background: #98b8fd;
+}
+  
+ td, th {
+  padding: 1em .5em;
+  vertical-align: middle;
+}
+  
+ td {
+  border-bottom: 1px solid rgba(0,0,0,.1);
+  background: #fff;
+}
+/* #schedule table tr,th{  
   border:1px solid #58bae4;
-}
+} */
 #newEventModal,#deleteEventModal {
   display: none;
   z-index: 20;

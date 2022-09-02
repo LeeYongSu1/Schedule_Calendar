@@ -89,24 +89,26 @@ app.post('/del', (req, res)=>{
 
 app.post('/mod', (req, res)=>{
 
-    const beforeTitle = req.body.beforeTitle;
+    const beforeDate = req.body.beforeDate;
     const title = req.body.title;
     const day = req.body.day;
     const date = req.body.date;
+    const date_no = req.body.date_no;
     const cat = req.body.cat;
     const sts = req.body.sts;
     const refer = req.body.refer;
-    console.log("modeTitle  " + beforeTitle)
+    console.log("modeTitle  " + beforeDate)
     console.log("title  " + title);
     console.log("day  " + day);
     console.log("date  " + date);
     console.log("cat  " + cat);
     console.log("sts  " + sts);
     console.log("refer  " + refer);
+    console.log("date_no  " + date_no);
     const client = new Client(dbInfo)
     client.connect()
-    client.query('UPDATE public."schedule" SET title = $1, day_id = $2, date = $3,category = $4,state = $5,refer = $6 WHERE title = $7'
-                , [title, day, date,cat,sts,refer,beforeTitle]
+    client.query('UPDATE public."schedule" SET date = $3, day_id = $2, title = $1 ,category = $4,state = $5,refer = $6 WHERE date = $8 AND date_no = $7'
+                , [title, day, date,cat,sts,refer,date_no,beforeDate]
                 , (err, result)=>{
         if(err){
             console.log('Error',err)
