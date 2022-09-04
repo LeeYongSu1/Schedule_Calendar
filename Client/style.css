@@ -50,7 +50,7 @@ button {
 
 .day {
   width: 100px;
-  padding: 10px;
+  /* padding: 10px; */
   height: 100px;
   cursor: pointer;
   box-sizing: border-box;
@@ -61,11 +61,7 @@ button {
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  overflow:auto; 
-}
-.dayExtend{
-  display: flex;
-  /* height: 100%; */
+  /* overflow:auto;  */
 }
 .day:hover {
   background-color: #e8faed;
@@ -73,36 +69,61 @@ button {
 .day + #currentDay {
   background-color:#e8f4fa;
 }
-.day > .hokaBtn {
+.dayInnerFrame {
+  width: 100px;
+  height: 100%;
+  position: relative;
+}
+.focus {
+  z-index: 20;
+}
+.extendFrame{
+  height: 100%;
+}
+.hokaBtn {
+  color: #ccc;
+  width: 15px;
+  height: 15px;
   border: 1px solid #ccc;
+  border-radius: 10px;
   background-color: #fff;
+  line-height: 12px;
+  text-align: center;
   position: absolute;
   bottom: 8px;
   right: 8px;
-  width: 15px;
-  height: 15px;
-  border-radius: 10px;
-  color: #000;
 }
-
-.day > .daySquareInnerText {
-  width: 65%;
-  position: absolute;
-  top: 30px;
-  right: 8px;
+.hokaBtn:hover {
+  background-color: #000;
+  color: #fff;
 }
-.day > .daySquareInnerText > .event {
-  margin-bottom: 5px;
+.daySquareInnerText {
+  /* width: 65%; */
+  /* height: 100px; */
+  position: relative;
+  
+  /* background-color: #fff; */
+  /* top: 30px;
+  right: 8px
+  ; */
+}
+.daySquareInnerText2 {
+  background-color: #fff;
 }
 .event {
-  font-size: 10px;
   padding: 1px 3px;
+  margin-left: 20px;
+  margin-bottom: 5px;
+  font-size: 10px;
   background-color: #58bae4;
   color: white;
   border-radius: 10px;
   max-height: 55px;
-  overflow: hidden;
+  /* overflow: hidden; */
   text-indent: 5px;
+}
+.event:last-child {
+  margin-bottom: 30px;
 }
 .event:hover {
   background-color: #3effbf;
@@ -154,7 +175,7 @@ thead {
 } */
 #newEventModal,#deleteEventModal {
   display: none;
-  z-index: 20;
+  z-index: 30;
   padding: 25px;
   background-color: #e8f4fa;
   box-shadow: 0px 0px 3px black;

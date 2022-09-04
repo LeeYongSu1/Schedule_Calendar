@@ -215,10 +215,14 @@ function Init(){
     }
     
     if (i > this.paddingDays) {
-      daySquare.innerText =  i - this.paddingDays;// 1~31
+      //daySquare.innerText =  i - this.paddingDays;// 1~31
+      const dayInnerFrame = document.createElement('div');
+      dayInnerFrame.innerText =  i - this.paddingDays;// 1~31
       const daySquareInnerText = document.createElement('div');
+      dayInnerFrame.classList.add('dayInnerFrame');
       daySquareInnerText.classList.add('daySquareInnerText');
-      daySquare.appendChild(daySquareInnerText);
+      daySquare.appendChild(dayInnerFrame);
+      dayInnerFrame.appendChild(daySquareInnerText);
       // let eventForDay;
       
       if(dataArray.length > 0){
@@ -239,19 +243,31 @@ function Init(){
             if(childCount.length == 3){
               let hokaBtn = document.createElement('div');
               hokaBtn.classList.add('hokaBtn'); 
-              daySquare.appendChild(hokaBtn);
+              dayInnerFrame.appendChild(hokaBtn);
+              hokaBtn.innerHTML = '+';
               hokaBtn.addEventListener('click', (event) =>{
                 event.stopPropagation();
                 for(let i = 0; i < childCount.length; i++){
                     if(childCount[i].style.display == 'block' && i > 1){
                       childCount[i].style.display = 'none';
+                      dayInnerFrame.classList.remove('extendFrame');
+                      dayInnerFrame.classList.remove('focus');
+                      daySquareInnerText.classList.remove('daySquareInnerText2');
+                      // daySquareInnerText.style.height = 'auto';
+                      daySquareInnerText.style.paddingBottom = '0px';
+                      hokaBtn.innerHTML = '+';
                     }
                     else{
                       childCount[i].style.display = 'block';
+                      dayInnerFrame.classList.add('extendFrame');
+                      dayInnerFrame.classList.add('focus');
+                      daySquareInnerText.classList.add('daySquareInnerText2');
+                      daySquareInnerText.style.paddingBottom = '10px';
+                      hokaBtn.innerHTML = '-';
                     }
                     
                 }
-                daySquare.classList.add('dayExtend')
+                
               });
             }
             if(childCount.length > 2){
