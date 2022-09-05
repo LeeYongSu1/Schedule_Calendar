@@ -253,8 +253,8 @@ function Init(){
                       dayInnerFrame.classList.remove('extendFrame');
                       dayInnerFrame.classList.remove('focus');
                       daySquareInnerText.classList.remove('daySquareInnerText2');
-                      // daySquareInnerText.style.height = 'auto';
-                      daySquareInnerText.style.paddingBottom = '0px';
+                      daySquareInnerText.style.paddingBottom = '10px';
+                      hokaBtn.style.bottom = '5px';
                       hokaBtn.innerHTML = '+';
                     }
                     else{
@@ -263,6 +263,7 @@ function Init(){
                       dayInnerFrame.classList.add('focus');
                       daySquareInnerText.classList.add('daySquareInnerText2');
                       daySquareInnerText.style.paddingBottom = '10px';
+                      hokaBtn.style.bottom = '25px';
                       hokaBtn.innerHTML = '-';
                     }
                     
