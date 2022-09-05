@@ -217,11 +217,13 @@ function Init(){
     if (i > this.paddingDays) {
       //daySquare.innerText =  i - this.paddingDays;// 1~31
       const dayInnerFrame = document.createElement('div');
-      dayInnerFrame.innerText =  i - this.paddingDays;// 1~31
+      const dayInnerFrameNumber = document.createElement('span');
+      dayInnerFrameNumber.innerText =  i - this.paddingDays;// 1~31
       const daySquareInnerText = document.createElement('div');
       dayInnerFrame.classList.add('dayInnerFrame');
       daySquareInnerText.classList.add('daySquareInnerText');
       daySquare.appendChild(dayInnerFrame);
+      dayInnerFrame.appendChild(dayInnerFrameNumber);
       dayInnerFrame.appendChild(daySquareInnerText);
       // let eventForDay;
       
