@@ -225,6 +225,7 @@ function Init(){
       daySquare.appendChild(dayInnerFrame);
       dayInnerFrame.appendChild(dayInnerFrameNumber);
       dayInnerFrame.appendChild(daySquareInnerText);
+    
       // let eventForDay;
       
       if(dataArray.length > 0){
@@ -249,11 +250,20 @@ function Init(){
               hokaBtn.innerHTML = '+';
               hokaBtn.addEventListener('click', (event) =>{
                 event.stopPropagation();
+                console.log("Click");
                 for(let i = 0; i < childCount.length; i++){
                     if(childCount[i].style.display == 'block' && i > 1){
                       childCount[i].style.display = 'none';
+                      let contains = daySquareInnerText.classList.contains('daySquareInnerText2');
+                      
+                      daySquareInnerText.removeEventListener('click', (event => {
+                        
+                      // event.stopImmediatePropagation();
+                      }));
+                      
                       dayInnerFrame.classList.remove('extendFrame');
                       dayInnerFrame.classList.remove('focus');
+                     
                       daySquareInnerText.classList.remove('daySquareInnerText2');
                       daySquareInnerText.style.paddingBottom = '10px';
                       hokaBtn.style.bottom = '5px';
@@ -264,6 +274,13 @@ function Init(){
                       dayInnerFrame.classList.add('extendFrame');
                       dayInnerFrame.classList.add('focus');
                       daySquareInnerText.classList.add('daySquareInnerText2');
+                      let contains = daySquareInnerText.classList.contains('daySquareInnerText2');
+                      if(contains){
+                        daySquareInnerText.addEventListener('click', (event => {
+                          event.stopPropagation();
+                          // event.stopImmediatePropagation();
+                        }));
+                      }
                       daySquareInnerText.style.paddingBottom = '10px';
                       hokaBtn.style.bottom = '25px';
                       hokaBtn.innerHTML = '-';
